@@ -3,17 +3,17 @@
 import Login from '../screen/Login.vue'
 import Main from '../screen/Main.vue'
 
-import HelloWorld from '../components/HelloWorld.vue'
-import Table from '../components/Table.vue'
-import Form from '../components/Form.vue'
-import List from '../components/List.vue'
-import Auth from '../components/Auth.vue'
-import User from '../components/User.vue'
-import Role from '../components/Role.vue'
-import AuthList from '../components/AuthList.vue'
-import newUser from '../components/newUser.vue'
-import newRole from '../components/newRole.vue'
-import newAuth from '../components/newAuth.vue'
+import tutor from '../components/tutor.vue'
+import teacher from '../components/teacher.vue'
+import resume from '../components/resume.vue'
+import release from '../components/release.vue'
+
+import evaluateStu from '../components/evaluateStu.vue'
+import evaluateTutor from '../components/evaluateTutor.vue'
+
+import service from '../components/service.vue'
+
+import newTeacher from '../components/newTeacher.vue'
 // Vue.use(Router)
 
 let routes = [
@@ -29,49 +29,37 @@ let routes = [
       component: Main,
       children:[
         {
-          path: '/hello',
-          name: 'HelloWorld',
-          component: HelloWorld
+          path: 'tutor',
+          name: 'tutor',
+          component: tutor
         },{
-          path: '/table',
-          name: 'table',
-          component: Table
+          path: 'release',
+          name: 'release',
+          component: release
         },{
-          path: '/form',
-          name: 'form',
-          component: Form
+          path: 'teacher',
+          name: 'teacher',
+          component: teacher
         },{
-          path: '/table2',
-          name: 'table2',
-          component: Table
+          path: 'resume',
+          name: 'resume',
+          component: resume
         },{
-          path: '/list',
-          name: 'list',
-          component: List
+          path: 'evaluateStu',
+          name: 'evaluateStu',
+          component: evaluateStu
         },{
-          path: '/auth',
-          name: 'auth',
-          component: Auth
+          path: 'evaluateTutor',
+          name: 'evaluateTutor',
+          component: evaluateTutor
         },{
-          path: '/user',
-          name: 'user',
-          component: User
+          path: 'service',
+          name: 'service',
+          component: service
         },{
-          path: '/role',
-          name: 'role',
-          component: Role
-        },{
-          path: '/newUser',
-          name: 'newUser',
-          component: newUser,
-        },{
-          path: '/newRole',
-          name: 'newRole',
-          component: newRole,
-        },{
-          path: '/newAuth',
-          name: 'newAuth',
-          component: newAuth,
+          path: 'newTeacher',
+          name: 'newTeacher',
+          component: newTeacher
         }
       ]
     }

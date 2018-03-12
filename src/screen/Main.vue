@@ -1,7 +1,7 @@
 <template>
   <el-row class="container">
     <el-col :span="24" class="header">
-      <el-col :span="10" class="logo">ADMIN SYSTEM</el-col>
+      <el-col :span="10" class="logo">轻松盈</el-col>
       <el-col :span="4" class="user" >
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
@@ -23,39 +23,33 @@
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>导航一</span>
+              <span>家教</span>
             </template>
-              <el-menu-item index="/list">选项1</el-menu-item>
-              <el-menu-item index="/table">选项2</el-menu-item>
-              <el-menu-item index="/form">选项3</el-menu-item>
-              <el-menu-item index="/hello">选项4</el-menu-item>
+              <el-menu-item index="/tutor">家教信息</el-menu-item>
+              <el-menu-item index="/release">家长报名</el-menu-item>
+              <el-menu-item index="/resume">简历投递</el-menu-item>
+              <el-menu-item index="/teacher">教师展示</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span slot="title">权限控制</span>
+              <span slot="title">评价</span>
             </template>
-              <el-menu-item index="/user">用户列表</el-menu-item>
-              <el-menu-item index="/role">角色列表</el-menu-item>
-              <el-menu-item index="/auth">权限列表</el-menu-item>
+              <el-menu-item index="/evaluateStu">学员评价</el-menu-item>
+              <el-menu-item index="/evaluateTutor">教员评价</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-setting"></i>
-              <span slot="title">导航三</span>
+              <span slot="title">咨询</span>
             </template>
-              <el-menu-item index="/hello">选项1</el-menu-item>
-              <el-menu-item index="/hello">选项2</el-menu-item>
-              <el-menu-item index="/hello">选项3</el-menu-item>              
-              <el-menu-item index="/hello">选项1</el-menu-item>
-              <el-menu-item index="/hello">选项2</el-menu-item>
-              <el-menu-item index="/hello">选项3</el-menu-item>
+              <el-menu-item index="/service">咨询服务</el-menu-item>
           </el-submenu>
         </el-menu>
       </aside>
       <section class="content">
         <transition name="fade" mode="out-in">
-          <router-view></router-view>
+          <router-view :token="token"></router-view>
         </transition>
       </section>
     </el-col>
@@ -65,18 +59,60 @@
   export default{
     data(){
       return{
-
+        token: sessionStorage.getItem('token')
       }
     },
     methods: {
       quit(){
         sessionStorage.removeItem('lg');
-        // console.log(123)
+        sessionStorage.removeItem('token');
         this.$router.push({
           path: '/login'
         })
+      },
+      getTest: function(){
+        setTimeout(()=>{
+          this.token = 15263;
+        },3000)
+      },
+      setToken: function(t){
+        t.token = 2222;
+        return t.token;
       }
+    },
+    beforeCreate: function () {
+        console.group('beforeCreate 创建前状态===============》');
+    },
+    created: function () {
+        console.group('created 创建完毕状态===============》');
+        this.getTest();
+    },
+    beforeMount: function () {
+        console.group('beforeMount 挂载前状态===============》');
+    },
+    mounted: function () {
+        console.group('mounted 挂载结束状态===============》');
+        console.log(this.token);
+        // console.log(document.cookie);
+
+    },
+    beforeUpdate: function () {
+        console.group('beforeUpdate 更新前状态===============》');
+    },
+    updated: function () {
+        console.group('updated 更新完成状态===============》');
+        console.log(this.token)
+    },
+    beforeDestroy: function () {
+        console.group('beforeDestroy 销毁前状态===============》');
+    },
+    destroyed: function () {
+        console.group('destroyed 销毁完成状态===============》');
     }
+    // mounted(){
+    //   this.getTest();
+    //   // console.log(this.token)
+    // }
   }
 </script>
 <style scoped>
@@ -144,7 +180,7 @@
     padding: 20px;
     width: 100%;
     overflow: auto;
-    min-width: 1000px;
+    min-width: 750px;
     overflow: auto;
     /*background-color: #eee;*/
   }
