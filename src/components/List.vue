@@ -1,132 +1,204 @@
 <template>
-  <section>
-      <el-col :span="24" class="title">
-        <p class="title_text">test</p>
-        <el-breadcrumb separator="/" class="crumb">
-          <el-breadcrumb-item>首页</el-breadcrumb-item>
-          <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-        </el-breadcrumb>
-      </el-col>
-      <el-col class="search">
-        <el-input
-          placeholder="请输入搜索内容"
-          v-model="search"
-          type="input"
-          clearable
-          class="input"
-          size="middle">
-        </el-input>
-        <el-button class="btn" type="primary" size="mini">查询</el-button>
-      </el-col>
-    <el-table
-      :data="tableData3"
-      highlight-current-row
-      max-height="100%"
-      style="width: 100%;border: 1px solid #e5e5e5;color:#333;margin-bottom: 20px;"
-      v-loading="loading"
-      >
-      <el-table-column type="selection" width="55" header-align="center" >
-      </el-table-column>
-      <el-table-column prop="date" sortable label="日期" width="180" header-align="center">
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180" header-align="center">
-      </el-table-column>
-      <el-table-column prop="address" label="地址" min-width="300" header-align="center">
-      </el-table-column>
-      <el-table-column label="操作" width="150" header-align="center">
-          <template slot-scope="scope">
-            <el-button size="small">编辑</el-button>
-            <el-button type="danger" size="small">删除</el-button>
-          </template>
-        </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="100">
-    </el-pagination>
-  </section>
+	<section v-loading="loading">
+		<el-col :span="24" class="searchBlock">
+			<el-col :span="4">
+				<span class="searchTitle">时间:</span><el-input style="width: 150px" size="small" clearable></el-input>
+			</el-col>
+			<el-col :span="4">
+				<span class="searchTitle">时间:</span><el-input style="width: 150px" size="small" clearable></el-input>
+			</el-col>
+			<el-col :span="4">
+				<span class="searchTitle">时间:</span>
+				<el-date-picker
+					style="width: 150px"
+					size="small"
+					type="date"
+					placeholder="选择日期时间">
+    			</el-date-picker>
+			</el-col>
+			<el-col :span="4">
+				<span class="searchTitle">时间:</span><el-input style="width: 150px" size="small" clearable></el-input>
+			</el-col>
+			<el-col :span="4">
+				<span class="searchTitle">时间:</span><el-input style="width: 150px" size="small" clearable></el-input>
+			</el-col>
+<!-- 			<el-input style="width: 150px" size="small"></el-input>
+			<el-input style="width: 150px" size="small"></el-input> -->
+			<el-col style="margin-top: 10px;margin-left: 10px;">
+				<el-button type="primary" size="small" style="height: 30px;">查询</el-button>
+				<el-button type="primary" size="small" style="height: 30px;">增加</el-button>
+				<el-button type="danger" size="small" style="height: 30px;">删除</el-button>
+			</el-col>
+			
+		</el-col>
+		<el-table  :data="dataArr"  max-height="100%"  style="width: 100%;border: 1px solid #e5e5e5;color:#333;margin-bottom: 20px;">
+			<el-table-column type="index" sortable width="55" header-align="center" >
+			</el-table-column>
+			<el-table-column prop="name" label="学生姓名" min-width="100" header-align="center">
+			</el-table-column>				
+			<el-table-column prop="grade" label="学龄段" min-width="100" header-align="center">			
+			</el-table-column>				
+			<el-table-column prop="address" label="地址" min-width="200" header-align="center">
+			</el-table-column>				
+			<el-table-column prop="demand" label="要求" min-width="200" header-align="center">
+			</el-table-column>			
+	      	<el-table-column label="操作" width="250" header-align="center" >
+				<template slot-scope="scope">
+				<el-button  size="small">查看</el-button>
+				<el-button type="primary" size="small" >发布</el-button>
+				<el-button type="danger" size="small">删除</el-button>
+				</template>
+	        </el-table-column>
+	    </el-table>
+	   	<el-pagination
+	      background
+	      layout="prev, pager, next"
+	      @current-change="pageChange"
+	      :page-size="20"
+	      :total="total">
+	    </el-pagination>
+	</section>
 </template>
-
 <script>
-  import axios from 'axios';
-  export default {
-    data() {
-      return {
-        tableData3: [],
-        search: '',
-        loading: true
-      }
-    },
-    methods: {
-      getRes: function(){
-        // console.log(123)
-        // let _this = this;
-        axios.get('#').then((res)=>{
-          let data = res.data.data;
-          console.log(data);
-          this.loading = false;
-          let len = data.length;
-          for(let i = 0; i<len; i++){
-            let obj = {name: data[i].cityName, date: '2018-1-8', address: data[i].codeid}
-            this.tableData3.push(obj);
-          }
-          // this.tableData3.push(arr);
-          console.log(this.tableData3)
-        }).catch(function(error){
-            console.log(error)
-        })
-      }
-    },
-    mounted(){
-      this.getRes();
-    }
-  }
+	import axios from 'axios';
+	import API from '../util.js';
+	export default{
+		data(){ 
+			return {
+				dataArr: [],
+				dialogVisible: false,
+				sendVisible: false,
+				deleteVisible: false,
+				name: '',
+				sex: '',
+				grade: '',
+				classify: '',
+				trait: '',
+				patriarchName: '',
+				emolument: '',
+				phone: '',
+				subject: '',
+				date: '',
+				studentBase: '',
+				demand: '',
+				address: '',
+				title: '',
+				student: '',
+				time: '',
+				money: '',
+				
+				loading: false,
+
+				pageIndex: 1,
+				total: 0,
+
+			}
+		},
+		methods: {
+			// 初始化分页获取列表数据
+			getData: function(){
+				// console.log(api);
+				let auth = sessionStorage.getItem('token');
+				axios({
+					url: API.list,
+					method: 'get',
+					headers: {
+						'Authorization': 'Bearer '+auth,
+					}
+				}).then((res)=>{
+		          	console.log(res);
+		          	this.loading = false;
+
+		          // this.tableData3.push(arr);
+		          // console.log(this.tableData3)
+		        }).catch(function(error){
+		            console.log(error)
+		        })
+			},
+		    // 分页器点击跳转
+		    pageChange: function(val){
+		    	this.pageIndex = val;
+		    },
+		    // 编辑表单，自动填入数据
+		    showItem: function(index, id){
+		    	
+		    },
+		    sendItem: function(index, id){
+		    	
+		    },
+		    // 编辑表单，提交修改
+		    checkChange: function(){
+		    	
+		    },
+		    // 点击删除，弹窗确认
+		    openDelete: function(index,id){
+		    	
+		    },
+		    // 确认删除
+		    deleteItem: function(){
+		    	
+		    }
+		},
+		// 生命周期钩子，挂载结束
+		mounted(){
+			// this.getData();
+		}
+	}
 </script>
 <style scoped>
-  .header{
-    height: 50px;
-    line-height: 50px;
-    background-color: #25ff60
-  }
-  .row{
-    height: 40px;
-    line-height: 40px;
-  }
-  .title{
-    height: 40px;
-    line-height: 40px;
-    display: flex;   
-  }
-  .title_text{
-    width: 50%;
-    margin: 0 0 0 20px;
-    flex: 1;
-    text-align: left;
-    font-weight: bold;
-  }
-  .crumb{
-    line-height: 40px;
-    margin-right: 20px;
-  }
-  .search{
-    width: 100%;
-    background-color: #e5e5e5;
-    margin-bottom: 10px;
-    display: flex;
-  }
-  .input{
-    width: 150px;
-    margin: 10px 0 10px 10px;
-  }
-  .btn{
-    height: 40px;
-    margin: 10px 0 10px 10px;
-  }
-  tr>.current-row{
-    background-color: #25ff30;
-  }
-  .el-table th>.cell{
-    color:#333;
-  }
+	.item{
+		margin-bottom: 10px;
+
+		/*background-color: #999;*/
+		/*border-bottom: 1px solid #e5e5e5;*/
+	}
+	.half{
+		width: 50%;
+		float: left;
+	}
+	.title{
+		text-align: right;
+		height: 50px;
+		line-height: 50px;
+		margin: 0;
+	}
+	.input{
+		line-height: 50px;
+		padding-left: 10px;
+	}
+	.type{
+		text-align: left; 
+		/*text-indent: 10px;*/
+		/*height: 50px;*/
+		line-height: 50px;
+		padding-left: 10px;
+	}
+	.content{
+		text-align: left; 
+		text-indent: 10px;
+		height: 50px;
+		line-height: 50px;
+		margin: 0;
+	}
+	.btn{
+		height: 50px;
+		line-height: 50px;
+	}
+	.searchTitle{
+		display:inline-block;
+		color: #666;
+		font-size: 14px;
+		margin: 0 10px;
+	}
+	.searchBlock{
+		text-align: left;
+		padding: 20px 10px;
+		background-color: #d3d3d3;
+		border-radius: 10px;
+		margin-bottom: 10px;
+	    background: -webkit-linear-gradient(0deg,#e5e5e5, #d3d3d3); /* Safari 5.1 - 6.0 */
+	    background: -o-linear-gradient(0deg,#e5e5e5, #d3d3d3); /* Opera 11.1 - 12.0 */
+	    background: -moz-linear-gradient(0deg,#e5e5e5, #d3d3d3); /* Firefox 3.6 - 15 */
+	    background: linear-gradient(0deg,#e5e5e5, #d3d3d3); 
+	}
 </style>

@@ -12,20 +12,36 @@
 				<el-button type="primary" class="btn" @click.native.prevent="submit">登录</el-button>
 			</el-form-item>
 		</el-form>
+
 	</section>
 </template>
 <script>
 	import axios from 'axios';
+	import API from '../util.js';
 	export default {
 		data(){
 			return{
 				name: '',
-				password: ''
+				password: '',
+				test: '123'
 			}
 		},
 		methods: {
 			submit(){
-				console.log(this.$router);
+				axios.post(API.login,{username: this.name ,password: this.password}).then((rsp)=>{
+		          	let res = rsp.data;
+		          	if(res.code === 200){
+		          		sessionStorage.setItem('token',res.data.token);		
+		          		this.$router.push({
+							path: '/'
+						})	
+		          	}else{
+
+		          	}
+		        }).catch(function(error){
+		            console.log(error)
+		        })
+				// console.log(this.$router);
 				// if(this.name == 'admin' && this.password == 'admin'){
 				// 	sessionStorage.setItem('lg', (new Date()).getTime());
 				// 	sessionStorage.setItem('token','token12313131')

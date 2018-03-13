@@ -18,7 +18,7 @@ router.beforeEach((to,from,next)=>{
   if (to.path == '/login') {
     sessionStorage.removeItem('lg');
   }
-  let user = sessionStorage.getItem('lg');
+  let user = sessionStorage.getItem('token');
   if (!user && to.path != '/login') {
     next({ path: '/login' })
   } else {

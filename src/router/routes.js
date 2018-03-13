@@ -11,6 +11,10 @@ import release from '../components/release.vue'
 import evaluateStu from '../components/evaluateStu.vue'
 import evaluateTutor from '../components/evaluateTutor.vue'
 
+import mess from '../components/mess.vue'
+import list from '../components/list.vue'
+import user from '../components/user.vue'
+
 import service from '../components/service.vue'
 
 import newTeacher from '../components/newTeacher.vue'
@@ -25,10 +29,14 @@ let routes = [
     },
     {
       path: '/',
-      name: '',
+      name: '首页',
       component: Main,
       children:[
         {
+          path: '',
+          name: '',
+          component: mess
+        },{
           path: 'tutor',
           name: 'tutor',
           component: tutor
@@ -60,6 +68,14 @@ let routes = [
           path: 'newTeacher',
           name: 'newTeacher',
           component: newTeacher
+        },{
+          path: 'list',
+          name: 'list',
+          component: list
+        },{
+          path: 'user',
+          name: '用户列表',
+          component: user
         }
       ]
     }
