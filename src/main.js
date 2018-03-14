@@ -6,9 +6,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Router from 'vue-router'
 import routes from './router/routes'
+// import axios from 'axios'
 
 Vue.use(ElementUI)
 Vue.use(Router)
+// Vue.prototype.axios = axios;
 
 const router = new Router({
 	routes

@@ -61,7 +61,7 @@
 </template>
 <script>
 	import axios from 'axios';
-	import API from '../util.js';
+	import {API} from '../util.js';
 	export default{
 		data(){ 
 			return {

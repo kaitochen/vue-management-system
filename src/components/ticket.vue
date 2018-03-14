@@ -22,12 +22,9 @@
 			<el-col :span="4">
 				<span class="searchTitle">时间:</span><el-input style="width: 150px" size="small" clearable></el-input>
 			</el-col>
-<!-- 			<el-input style="width: 150px" size="small"></el-input>
-			<el-input style="width: 150px" size="small"></el-input> -->
 			<el-col style="margin-top: 10px;margin-left: 10px;">
 				<el-button type="primary" size="small" style="height: 30px;">查询</el-button>
-				<el-button type="primary" size="small" style="height: 30px;" @click="navigateAdd">增加</el-button>
-				<!-- <el-button type="danger" size="small" style="height: 30px;">删除</el-button> -->
+				<el-button type="primary" size="small" style="height: 30px;" @click="()=>{muteVisible = true}">禁言用户</el-button>
 			</el-col>
 			
 		</el-col>
@@ -37,19 +34,19 @@
 			<!-- <el-table-column type="selection"  width="55"></el-table-column> -->
 			<el-table-column prop="id" label="id" min-width="100" header-align="center">
 			</el-table-column>				
-			<el-table-column prop="username" label="账户" min-width="100" header-align="center">
+			<el-table-column prop="userId" label="用户id" min-width="100" header-align="center">
 			</el-table-column>				
 			<el-table-column prop="nickname" label="用户名" min-width="100" header-align="center">			
+			</el-table-column>	
+			<el-table-column prop="roomId" label="直播间id" min-width="100" header-align="center">			
 			</el-table-column>				
-			<el-table-column prop="roles" label="角色" min-width="200" header-align="center">
+			<el-table-column prop="phone" label="手机号" min-width="200" header-align="center">
 			</el-table-column>				
 			<el-table-column prop="createDate" label="创建时间" min-width="200" header-align="center">
 			</el-table-column>			
 	      	<el-table-column label="操作" width="300" header-align="center" >
 				<template slot-scope="scope">
-					<el-button  size="small" @click="showUpdate(scope.$index, scope.row.id)">修改信息</el-button>
-					<el-button type="primary" size="small" @click="showPsw(scope.$index, scope.row.id)" >修改密码</el-button>
-					<el-button type="danger" size="small" @click="showDelete(scope.$index, scope.row.id)">删除</el-button>
+					<el-button  size="small" @click="showUpdate(scope.$index)">解除禁言</el-button>
 				</template>
 	        </el-table-column>
 	    </el-table>
@@ -60,84 +57,43 @@
 	      :page-size="20"
 	      :total="total">
 	    </el-pagination>
-	    <el-dialog
-			title="删除"
-			:visible.sync="deleteVisible"
-			width="30%"
-			center>
-			<p style="text-align: center">确认删除该用户？</p>
-			<span slot="footer" class="dialog-footer">
-				<!-- <el-button  @click="cancel">取 消</el-button> -->
-				<el-button type="danger" @click="deleteItem">确 定</el-button>
-			</span>
-		</el-dialog>
+
 		<el-dialog
-			title="修改信息"
+			title="解除禁言"
 			:visible.sync="updateVisible"
 			width="40%"
 			center>
-			<el-row class="item">
-				<el-col  :span="5">
-					<p class="title">账号：</p>
-				</el-col>
-				<el-col class="input" :span="14">
-					<el-input v-model="username" disabled></el-input>
-				</el-col>
-			</el-row>
-			<el-row class="item">
-				<el-col  :span="5">
-					<p class="title">用户名：</p>
-				</el-col>
-				<el-col class="input" :span="14">
-					<el-input v-model="nickname"></el-input>
-				</el-col>
-			</el-row>
-
-			<el-row class="item">
-				<el-col  :span="5">
-					<p class="title">角色：</p>
-				</el-col>
-				<el-col class="input" :span="14">
-					<el-select v-model="roles" style="width: 100%" multiple placeholder="请选择">
-					    <el-option
-					      v-for="item in roleList"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value">
-					    </el-option>
-					</el-select>
-				</el-col>
-			</el-row>	
-			<!-- <p style="text-align: center">确认删除该用户？</p> -->
+			
+			<p style="text-align: center">确认解除禁言{{this.nickname}}这一用户吗？</p>
 			<span slot="footer" class="dialog-footer">
 				<!-- <el-button  @click="">取 消</el-button> -->
-				<el-button type="primary" @click="updateUser">确 定</el-button>
+				<el-button type="primary" @click="update">确 定</el-button>
 			</span>
 		</el-dialog>
 		<el-dialog
-			title="更改密码"
-			:visible.sync="passwordVisible"
+			title="禁言用户"
+			:visible.sync="muteVisible"
 			width="30%"
 			center>
 			<el-row class="item">
 				<el-col  :span="5">
-					<p class="title">新密码：</p>
+					<p class="title">用户手机号：</p>
 				</el-col>
 				<el-col class="input" :span="14">
-					<el-input v-model="password"></el-input>
+					<el-input v-model="mutePhone"></el-input>
 				</el-col>
 			</el-row>
 			<!-- <p style="text-align: center">确认删除该用户？</p> -->
 			<span slot="footer" class="dialog-footer">
 				<!-- <el-button  @click="">取 消</el-button> -->
-				<el-button type="primary" @click="updatePsw">确 定</el-button>
+				<el-button type="primary" @click="muteUser">确 定</el-button>
 			</span>
 		</el-dialog>
 	</section>
 </template>
 <script>
 	import axios from 'axios';
-	import {User_API,Function_API} from '../util.js';
+	import {Live_API} from '../util.js';
 	export default{
 		data(){ 
 			return {
@@ -148,20 +104,12 @@
 
 				auth: sessionStorage.getItem('token'),
 
-				deleteVisible: false,
-				deleteId: '',
 
 				updateVisible: false,
-				updateId: '',
-
-				passwordVisible: false,
-				passwordId: '',
-
-				username: '',
+				muteVisible: false,
+				mutePhone: '',
+				phone: '',
 				nickname: '',
-				roles: [],
-				roleList: [],
-				password: '',
 
 			}
 		},
@@ -171,7 +119,7 @@
 				this.loading = true;
                 let auth = sessionStorage.getItem('token');
 				axios({
-					url: User_API.user_list,
+					url: Live_API.mute_list,
 					method: 'get',
 					data: {pageIndex: this.pageIndex,pageSize: 20},
 					headers: {
@@ -179,8 +127,8 @@
                     }
 				}).then((rsp)=>{
 					let res = rsp.data;
-					this.dataArr = res.data.list;
 		          	console.log(res);
+					this.dataArr = res.data.list;
 		          	this.loading = false;
 		          	this.total = res.data.total;
 		        }).catch(function(error){
@@ -193,62 +141,15 @@
 		    	// this.loading = true;
 		   
 		    },
-		    // 点击删除，弹窗确认
-		    showDelete(index,id){
-		    	this.deleteVisible = true;
-		    	this.deleteId = id;
-		    },
-		    // 确认删除
-		    deleteItem(){
-		    	axios({
-		    		url: User_API.delete_user(this.deleteId),
-		    		method: 'delete',
-		    		headers: {
-		    			'Authorization': 'Bearer '+this.auth,
-		    		}
-		    	}).then((rsp)=>{
-		    		let res = rsp.data;
-		    		console.log(res);
-		    		if(res.code === 200){
-		    			this.deleteVisible = false;
-		    			this.deleteId = '';
-		    			this.$message({
-							message: '删除用户成功',
-							type: 'success',
-							duration: 1000
-						});
-						this.getData();
-		    		}else{
-		    			this.deleteVisible = false;
-		    			this.deleteId = '';
-		    			this.$message({
-							message: '删除用户失败',
-							type: 'error',
-							duration: 1000
-						});
-		    		}
-		    	}).catch((err)=>{
-		    		console.log(err);
-		    	})
-		    },
-		    cancel(){
-		    	this.deleteId = '';
-		    },
-		    showUpdate(index,id){
+		    showUpdate(index){
 		    	this.updateVisible = true;
-		    	this.username = this.dataArr[index].username;
-		    	this.nickname = this.dataArr[index].nickname;
-		    	this.roles = this.dataArr[index].roles === '*'?this.roleList.map((item)=>{return item.value}):this.dataArr[index].roles.split(',')
-		    	this.updateId = id;
+		    	this.phone = this.dataArr[index].phone;
+		    	this.nickname = this.dataArr[index].nickname;	
 		    },
-		    updateUser(){
+		    update(){
 		    	axios({
-		    		url: User_API.update_user(this.updateId),
-		    		method: 'POST',
-		    		data: {
-		    			nickname: this.nickname,
-		    			roles: this.roles.join(','),
-		    		},
+		    		url: Live_API.mute(this.phone,0),
+		    		method: 'get',
 		    		headers: {
                         'Authorization': 'Bearer '+this.auth,
                     }
@@ -256,20 +157,18 @@
 		    		let res = rsp.data;
 		    		console.log(res);
 		    		if(res.code === 200){
-		    			this.updateId = '';
 		    			this.updateVisible = false;
-		    			this.username = '';
+		    			this.phone = '';
 		    			this.nickname = '';
-		    			this.roles = [];
 		    			this.$message({
-							message: '修改用户信息成功',
+							message: '解除用户禁言成功',
 							type: 'success',
 							duration: 1000
 						});
 		    			this.getData()
 		    		}else{
 						this.$message({
-							message: '修改用户信息失败',
+							message: '解除用户禁言失败',
 							type: 'success',
 							duration: 1000
 						});
@@ -278,68 +177,43 @@
 		    		console.log(err);
 		    	})
 		    },
-		    showPsw(index,id){
-		    	this.passwordId = id;
-		    	this.passwordVisible = true;
-		    },
-		    updatePsw(){
-		    	axios({
-		    		url: User_API.update_psw(this.passwordId),
-		    		method: 'POST',
-		    		data: {
-		    			password: this.password
-		    		},
+		    muteUser(){
+				axios({
+		    		url: Live_API.mute(this.mutePhone,1),
+		    		method: 'get',
 		    		headers: {
-		    			'Authorization': 'Bearer '+this.auth,
-		    		}
+                        'Authorization': 'Bearer '+this.auth,
+                    }
 		    	}).then((rsp)=>{
 		    		let res = rsp.data;
 		    		console.log(res);
 		    		if(res.code === 200){
-		    			this.passwordId = '';
-		    			this.passwordVisible = false;
-		    			this.password = '';
+		    			this.muteVisible = false;
+		    			this.mutePhone = '';
 		    			this.$message({
-							message: '修改密码成功',
+							message: '禁言用户成功',
 							type: 'success',
 							duration: 1000
 						});
+		    			this.getData()
 		    		}else{
-		    			this.$message({
-							message: '修改密码失败',
+						this.$message({
+							message: '禁言用户失败',
 							type: 'success',
 							duration: 1000
 						});
 		    		}
 		    	}).catch((err)=>{
-		    		console.log(err)
+		    		console.log(err);
 		    	})
-		    },
-		    navigateAdd: function(){
-		    	this.$router.push({path: '/addUser'})
-		    },
-		    getRoleList: function(){
-				axios({
-					url: Function_API.roles,
-					method: 'get',
-					headers: {
-						'Authorization': 'Bearer '+sessionStorage.getItem('token'),
-					}
-				}).then((rsp)=>{
-					let res = rsp.data;
-					console.log(res);	
-					res.data.map((item)=>{
-						this.roleList.push({label: item,value: item});
-					})
-				}).catch((err)=>{
-					console.log(err);
-				})
-			},
+		    }
+		    // navigateAdd: function(){
+		    // 	this.$router.push({path: '/addUser'})
+		    // },
 		},
 		// 生命周期钩子，挂载结束
 		mounted(){
 			this.getData();
-			this.getRoleList();
 		}
 	}
 </script>

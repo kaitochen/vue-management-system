@@ -37,19 +37,19 @@
 			<!-- <el-table-column type="selection"  width="55"></el-table-column> -->
 			<el-table-column prop="id" label="id" min-width="100" header-align="center">
 			</el-table-column>				
-			<el-table-column prop="username" label="账户" min-width="100" header-align="center">
+			<el-table-column prop="title" label="标题" min-width="100" header-align="center">
 			</el-table-column>				
-			<el-table-column prop="nickname" label="用户名" min-width="100" header-align="center">			
+			<el-table-column prop="link" label="跳转链接" min-width="100" header-align="center">			
 			</el-table-column>				
-			<el-table-column prop="roles" label="角色" min-width="200" header-align="center">
+			<el-table-column prop="sort" label="序列" min-width="200" header-align="center">
 			</el-table-column>				
 			<el-table-column prop="createDate" label="创建时间" min-width="200" header-align="center">
 			</el-table-column>			
 	      	<el-table-column label="操作" width="300" header-align="center" >
 				<template slot-scope="scope">
 					<el-button  size="small" @click="showUpdate(scope.$index, scope.row.id)">修改信息</el-button>
-					<el-button type="primary" size="small" @click="showPsw(scope.$index, scope.row.id)" >修改密码</el-button>
-					<el-button type="danger" size="small" @click="showDelete(scope.$index, scope.row.id)">删除</el-button>
+<!-- 					<el-button type="primary" size="small" @click="showPsw(scope.$index, scope.row.id)" >修改密码</el-button>
+					<el-button type="danger" size="small" @click="showDelete(scope.$index, scope.row.id)">删除</el-button> -->
 				</template>
 	        </el-table-column>
 	    </el-table>
@@ -60,17 +60,6 @@
 	      :page-size="20"
 	      :total="total">
 	    </el-pagination>
-	    <el-dialog
-			title="删除"
-			:visible.sync="deleteVisible"
-			width="30%"
-			center>
-			<p style="text-align: center">确认删除该用户？</p>
-			<span slot="footer" class="dialog-footer">
-				<!-- <el-button  @click="cancel">取 消</el-button> -->
-				<el-button type="danger" @click="deleteItem">确 定</el-button>
-			</span>
-		</el-dialog>
 		<el-dialog
 			title="修改信息"
 			:visible.sync="updateVisible"
@@ -78,34 +67,27 @@
 			center>
 			<el-row class="item">
 				<el-col  :span="5">
-					<p class="title">账号：</p>
+					<p class="title">标题：</p>
 				</el-col>
 				<el-col class="input" :span="14">
-					<el-input v-model="username" disabled></el-input>
+					<el-input v-model="title" ></el-input>
 				</el-col>
 			</el-row>
 			<el-row class="item">
 				<el-col  :span="5">
-					<p class="title">用户名：</p>
+					<p class="title">跳转链接：</p>
 				</el-col>
 				<el-col class="input" :span="14">
-					<el-input v-model="nickname"></el-input>
+					<el-input v-model="link"></el-input>
 				</el-col>
 			</el-row>
 
 			<el-row class="item">
 				<el-col  :span="5">
-					<p class="title">角色：</p>
+					<p class="title">序列：</p>
 				</el-col>
 				<el-col class="input" :span="14">
-					<el-select v-model="roles" style="width: 100%" multiple placeholder="请选择">
-					    <el-option
-					      v-for="item in roleList"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value">
-					    </el-option>
-					</el-select>
+					<el-input v-model="sort"></el-input>
 				</el-col>
 			</el-row>	
 			<!-- <p style="text-align: center">确认删除该用户？</p> -->
@@ -114,30 +96,11 @@
 				<el-button type="primary" @click="updateUser">确 定</el-button>
 			</span>
 		</el-dialog>
-		<el-dialog
-			title="更改密码"
-			:visible.sync="passwordVisible"
-			width="30%"
-			center>
-			<el-row class="item">
-				<el-col  :span="5">
-					<p class="title">新密码：</p>
-				</el-col>
-				<el-col class="input" :span="14">
-					<el-input v-model="password"></el-input>
-				</el-col>
-			</el-row>
-			<!-- <p style="text-align: center">确认删除该用户？</p> -->
-			<span slot="footer" class="dialog-footer">
-				<!-- <el-button  @click="">取 消</el-button> -->
-				<el-button type="primary" @click="updatePsw">确 定</el-button>
-			</span>
-		</el-dialog>
 	</section>
 </template>
 <script>
 	import axios from 'axios';
-	import {User_API,Function_API} from '../util.js';
+	import {Advert_API} from '../util.js';
 	export default{
 		data(){ 
 			return {
@@ -148,20 +111,14 @@
 
 				auth: sessionStorage.getItem('token'),
 
-				deleteVisible: false,
-				deleteId: '',
 
 				updateVisible: false,
 				updateId: '',
 
-				passwordVisible: false,
-				passwordId: '',
-
-				username: '',
-				nickname: '',
-				roles: [],
-				roleList: [],
-				password: '',
+				title: '',
+				link: '',
+				sort: '',
+				imgId: '',
 
 			}
 		},
@@ -171,11 +128,11 @@
 				this.loading = true;
                 let auth = sessionStorage.getItem('token');
 				axios({
-					url: User_API.user_list,
+					url: Advert_API.list,
 					method: 'get',
 					data: {pageIndex: this.pageIndex,pageSize: 20},
 					headers: {
-                        'Authorization': 'Bearer '+this.auth,
+                        'Authorization': 'Bearer '+auth,
                     }
 				}).then((rsp)=>{
 					let res = rsp.data;
@@ -193,61 +150,24 @@
 		    	// this.loading = true;
 		   
 		    },
-		    // 点击删除，弹窗确认
-		    showDelete(index,id){
-		    	this.deleteVisible = true;
-		    	this.deleteId = id;
-		    },
-		    // 确认删除
-		    deleteItem(){
-		    	axios({
-		    		url: User_API.delete_user(this.deleteId),
-		    		method: 'delete',
-		    		headers: {
-		    			'Authorization': 'Bearer '+this.auth,
-		    		}
-		    	}).then((rsp)=>{
-		    		let res = rsp.data;
-		    		console.log(res);
-		    		if(res.code === 200){
-		    			this.deleteVisible = false;
-		    			this.deleteId = '';
-		    			this.$message({
-							message: '删除用户成功',
-							type: 'success',
-							duration: 1000
-						});
-						this.getData();
-		    		}else{
-		    			this.deleteVisible = false;
-		    			this.deleteId = '';
-		    			this.$message({
-							message: '删除用户失败',
-							type: 'error',
-							duration: 1000
-						});
-		    		}
-		    	}).catch((err)=>{
-		    		console.log(err);
-		    	})
-		    },
-		    cancel(){
-		    	this.deleteId = '';
-		    },
 		    showUpdate(index,id){
-		    	this.updateVisible = true;
-		    	this.username = this.dataArr[index].username;
-		    	this.nickname = this.dataArr[index].nickname;
-		    	this.roles = this.dataArr[index].roles === '*'?this.roleList.map((item)=>{return item.value}):this.dataArr[index].roles.split(',')
-		    	this.updateId = id;
+		    	// this.updateVisible = true;
+		    	// this.title = this.dataArr[index].title;
+		    	// this.link = this.dataArr[index].link;
+		    	// this.sort = this.dataArr[index].sort;
+		    	// this.updateId = id;
+		    	// this.imgId = this.dataArr[index].imgId;
+		    	this.$router.push({name: '修改banner',params:this.dataArr[index]})
 		    },
 		    updateUser(){
 		    	axios({
-		    		url: User_API.update_user(this.updateId),
+		    		url: Advert_API.update(this.updateId),
 		    		method: 'POST',
 		    		data: {
-		    			nickname: this.nickname,
-		    			roles: this.roles.join(','),
+		    			title: this.title,
+		    			link: this.link,
+		    			sort: this.sort,
+		    			imgId: this.imgId,
 		    		},
 		    		headers: {
                         'Authorization': 'Bearer '+this.auth,
@@ -258,9 +178,10 @@
 		    		if(res.code === 200){
 		    			this.updateId = '';
 		    			this.updateVisible = false;
-		    			this.username = '';
-		    			this.nickname = '';
-		    			this.roles = [];
+		    			this.title = '';
+		    			this.link = '';
+		    			this.sort = '';
+		    			this.imgId = '';
 		    			this.$message({
 							message: '修改用户信息成功',
 							type: 'success',
@@ -278,68 +199,14 @@
 		    		console.log(err);
 		    	})
 		    },
-		    showPsw(index,id){
-		    	this.passwordId = id;
-		    	this.passwordVisible = true;
-		    },
-		    updatePsw(){
-		    	axios({
-		    		url: User_API.update_psw(this.passwordId),
-		    		method: 'POST',
-		    		data: {
-		    			password: this.password
-		    		},
-		    		headers: {
-		    			'Authorization': 'Bearer '+this.auth,
-		    		}
-		    	}).then((rsp)=>{
-		    		let res = rsp.data;
-		    		console.log(res);
-		    		if(res.code === 200){
-		    			this.passwordId = '';
-		    			this.passwordVisible = false;
-		    			this.password = '';
-		    			this.$message({
-							message: '修改密码成功',
-							type: 'success',
-							duration: 1000
-						});
-		    		}else{
-		    			this.$message({
-							message: '修改密码失败',
-							type: 'success',
-							duration: 1000
-						});
-		    		}
-		    	}).catch((err)=>{
-		    		console.log(err)
-		    	})
-		    },
 		    navigateAdd: function(){
-		    	this.$router.push({path: '/addUser'})
+		    	this.$router.push({path: 'addAdvert'})
+		    	// this.$router.push({name: '增加banner',params:{param:{id:1}}})
 		    },
-		    getRoleList: function(){
-				axios({
-					url: Function_API.roles,
-					method: 'get',
-					headers: {
-						'Authorization': 'Bearer '+sessionStorage.getItem('token'),
-					}
-				}).then((rsp)=>{
-					let res = rsp.data;
-					console.log(res);	
-					res.data.map((item)=>{
-						this.roleList.push({label: item,value: item});
-					})
-				}).catch((err)=>{
-					console.log(err);
-				})
-			},
 		},
 		// 生命周期钩子，挂载结束
 		mounted(){
 			this.getData();
-			this.getRoleList();
 		}
 	}
 </script>

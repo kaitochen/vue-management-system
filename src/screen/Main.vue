@@ -23,7 +23,7 @@
                     <template v-for="(item,index) in roleRouter">
                         <el-submenu :index="index.toString()" >
                             <template slot="title"><i class="el-icon-menu"></i>{{item.title}}</template>
-                            <el-menu-item v-for="child in item.children" :index="router[index]" :key="child.url">{{child.title}}</el-menu-item>
+                            <el-menu-item v-for="(child,i) in item.children" :index="router[i]" :key="index+i">{{child.title}}</el-menu-item>
                         </el-submenu>
                     </template>
 <!--                     <el-submenu index="1">
@@ -64,7 +64,7 @@
             </el-col>
             <el-col>
                 <transition name="fade" mode="out-in">
-                    <router-view :token="token"></router-view>
+                    <router-view></router-view>
                 </transition>
             </el-col>
           </section>
@@ -73,13 +73,13 @@
 </template>
 <script>
     import axios from 'axios';
-    import API from '../util.js';
+    import {API} from '../util.js';
     export default{
         data(){
             return{
                 token: sessionStorage.getItem('token'),
                 roleRouter: [],
-                router: ['/list','/user','/']
+                router: ['/advert','/user','/goods','/addUser']
             }
         },
         methods: {

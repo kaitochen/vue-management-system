@@ -3,21 +3,15 @@
 import Login from '../screen/Login.vue'
 import Main from '../screen/Main.vue'
 
-import tutor from '../components/tutor.vue'
-import teacher from '../components/teacher.vue'
-import resume from '../components/resume.vue'
-import release from '../components/release.vue'
-
-import evaluateStu from '../components/evaluateStu.vue'
-import evaluateTutor from '../components/evaluateTutor.vue'
 
 import mess from '../components/mess.vue'
 import list from '../components/list.vue'
 import user from '../components/user.vue'
-
-import service from '../components/service.vue'
-
-import newTeacher from '../components/newTeacher.vue'
+import addUser from '../components/addUser.vue'
+import advert from '../components/advert.vue'
+import addAdvert from '../components/addAdvert.vue'
+import live from '../components/live.vue'
+import goods from '../components/goods.vue'
 // Vue.use(Router)
 
 let routes = [
@@ -37,38 +31,6 @@ let routes = [
           name: '',
           component: mess
         },{
-          path: 'tutor',
-          name: 'tutor',
-          component: tutor
-        },{
-          path: 'release',
-          name: 'release',
-          component: release
-        },{
-          path: 'teacher',
-          name: 'teacher',
-          component: teacher
-        },{
-          path: 'resume',
-          name: 'resume',
-          component: resume
-        },{
-          path: 'evaluateStu',
-          name: 'evaluateStu',
-          component: evaluateStu
-        },{
-          path: 'evaluateTutor',
-          name: 'evaluateTutor',
-          component: evaluateTutor
-        },{
-          path: 'service',
-          name: 'service',
-          component: service
-        },{
-          path: 'newTeacher',
-          name: 'newTeacher',
-          component: newTeacher
-        },{
           path: 'list',
           name: 'list',
           component: list
@@ -76,6 +38,30 @@ let routes = [
           path: 'user',
           name: '用户列表',
           component: user
+        },{
+          path: 'addUser',
+          name: '增加用户',
+          component: addUser
+        },{
+          path: 'advert',
+          name: 'banner列表',
+          component: advert
+        },{
+          path: 'addAdvert',
+          name: '增加banner',
+          component: addAdvert
+        },{
+          path: 'updateAdvert/:params',
+          name: '修改banner',
+          component: addAdvert
+        },{
+          path: 'live',
+          name: '禁言列表',
+          component: live
+        },{
+          path: 'goods',
+          name: '券商品列表',
+          component: goods
         }
       ]
     }
