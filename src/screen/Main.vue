@@ -89,28 +89,6 @@
 				})
 			},
 			getRole() {
-//				let auth = sessionStorage.getItem('token');
-//				axios({
-//					url: API.role,
-//					method: 'get',
-//					headers: {
-//						'Authorization': 'Bearer ' + auth,
-//					}
-//				}).then((rsp) => {
-//					let res = rsp.data;
-//					this.roleRouter = res.data;
-//				    if (res.code === 401) {
-//						this.$alert('登录信息过期，请重新登录!', '登录提醒', {
-//							confirmButtonText: '重新登录',
-//							callback: action => {
-//								this.$router.push({path: '/login'})
-//							}
-//						})
-//						;
-//					}
-//				}).catch(function (error) {
-//					console.log(error)
-//				})
                 //此处为功能列表获取，该处的设计实现请自行完成
                 this.roleRouter = [
                     {
