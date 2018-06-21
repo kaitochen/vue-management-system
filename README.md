@@ -1,6 +1,7 @@
-# management
+# vue-admin
 
-> A Vue.js project
+> vue manager 
+> vue+vue-router+vuex+element-ui+axios+qiniu
 
 ## Build Setup
 

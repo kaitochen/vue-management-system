@@ -1,0 +1,53 @@
+.el-menu--horizontal .el-submenu:focus > .el-submenu__title {
+    color: #fff
+}
+.is-opened .el-submenu__title{
+    background-color: #494949;
+}
+.el-submenu__title {
+    color: #fff;
+}
+
+.el-menu-item {
+    color: #eee;
+}
+
+.el-menu-item:focus, .el-menu-item:hover {
+    outline: 0;
+    background-color: #5d8fa7
+}
+
+.el-submenu.is-active .el-submenu__title {
+    background-color: #5d8fa7
+}
+
+.el-submenu__title:hover {
+    background-color: #5d8fa7
+}
+
+.el-menu-item.is-active {
+    color: #fff;
+    background-color: #393939;
+}
+
+.el-table thead {
+    color: #333;
+    font-weight: 500
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: rgba(170, 170, 170, 0.4)
+}
+
+.el-submenu__title i {
+    color: #fff
+}
+
+.el-menu {
+    background-color: #333;
+}
+
+.el-table th {
+    background-color: #494949;
+    color: #fff;
+}
