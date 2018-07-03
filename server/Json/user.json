@@ -1,0 +1,9 @@
+{
+  "name": "test_data",
+  "data": {
+    "admin": {
+      "name": "admin",
+      "password": "123456"
+    }
+  }
+}

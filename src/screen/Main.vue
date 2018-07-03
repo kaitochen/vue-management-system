@@ -77,7 +77,6 @@
                         name: '/home',
 				    }
 				],
-				// router: ['/functions','/exchangeLog','/ticket','/addUser']
 			}
 		},
 		methods: {
@@ -218,14 +217,14 @@
 			//获取七牛云的上传token，在main界面挂载结束时获取，并且托管在vuex上，全局使用，每次使用上传功能就无需再次获取token
             //如果用户刷新界面，main界面都会重新加载，从而保证token一致有效，并且存在
             //获取token的形式根据七牛云的文档去实现，可通过后台接口获取，具体实现去自行实现
-			this.axios({
-				url: this.API.Upload.upload_token,
-				method: 'get',
-			}).then((rsp)=>{
-				let res = rsp.data;
-//				this.token = res.data.token;
-				this.$store.commit('set',res.data.token);
-			})
+//			this.axios({
+//				url: this.API.Upload.upload_token,
+//				method: 'get',
+//			}).then((rsp)=>{
+//				let res = rsp.data;
+////				this.token = res.data.token;
+//				this.$store.commit('set',res.data.token);
+//			})
 
 		},
 		beforeUpdate: function () {
