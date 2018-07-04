@@ -1,6 +1,6 @@
 const fs = require('fs');
 const crypto = require('crypto');
-const md5 = crypto.createHash('md5');
+
 
 let CheckUserController = async (ctx,next)=>{
 	let DB ;
@@ -26,7 +26,6 @@ let checkByNamePsw = async (params,database)=>{
 	let data = database.data;
 	let name = params.username;
 	let psw = params.password;
-	// console.log(database)
 	let user = data[name];
 	let result,msg;
 
@@ -59,10 +58,15 @@ let checkByNamePsw = async (params,database)=>{
 	// console.log(result)
 }
 
-const setAuth = (name)=>{
-	let auth = md5.update(name).digest('hex');
-	// console.log(auth);
-	global.auth = auth;
+let setAuth = (name)=>{
+	try{
+		let hash = crypto.createHash('md5');
+		let auth = hash.update(name+new Date().getTime()).digest('hex');
+		global.auth = auth;
+	}
+	catch(err){
+		console.log(err);
+	}
 }
 
 module.exports = CheckUserController;
